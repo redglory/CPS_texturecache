@@ -45,7 +45,7 @@ config = [{
                 {
                     'name': 'prefix_path',
                     'label': 'Path to prefix artwork',
-                    'default': 'ftp://192.168.1.77:60666/Movies/',
+                    'default': 'nfs://192.168.1.77/Movies/',
                     'description': 'Choose your prefix artwork path',
                 },
                 {

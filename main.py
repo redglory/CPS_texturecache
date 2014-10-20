@@ -264,6 +264,7 @@ class Texturecache(Plugin):
             command = ['python', self.texturecache_path, 'set', self.config_file]
             log.debug("Setting media library artwork with command: %s", command)
             myinput = codecs.open(self.movie_local, "rb", encoding="utf-8")
+            log.debug(myinput)
             ret = check_call(command, stdin=myinput, stderr=PIPE)
             myinput.close()
             log.debug('set_artwork() return code: %s', ret)

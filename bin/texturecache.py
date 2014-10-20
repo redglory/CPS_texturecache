@@ -58,7 +58,7 @@ else:
 class MyConfiguration(object):
   def __init__(self, argv):
 
-    self.VERSION = "1.6.8"
+    self.VERSION = "1.7.9"
 
     self.GITHUB = "https://raw.github.com/MilhouseVH/texturecache.py/master"
     self.ANALYTICS_GOOD = "http://goo.gl/BjH6Lj"
@@ -73,19 +73,22 @@ class MyConfiguration(object):
 
     # https://github.com/xbmc/xbmc/blob/master/xbmc/settings/AdvancedSettings.cpp
     m_pictureExtensions = ".png|.jpg|.jpeg|.bmp|.gif|.ico|.tif|.tiff|.tga|.pcx|.cbz|.zip|.cbr|.rar|.dng|.nef|.cr2|.crw|.orf|.arw|.erf|.3fr|.dcr|.x3f|.mef|.raf|.mrw|.pef|.sr2|.rss"
-    m_musicExtensions = ".nsv|.m4a|.flac|.aac|.strm|.pls|.rm|.rma|.mpa|.wav|.wma|.ogg|.mp3|.mp2|.m3u|.mod|.amf|.669|.dmf|.dsm|.far|.gdm|.imf|.it|.m15|.med|.okt|.s3m|.stm|.sfx|.ult|.uni|.xm|.sid|.ac3|.dts|.cue|.aif|.aiff|.wpl|.ape|.mac|.mpc|.mp+|.mpp|.shn|.zip|.rar|.wv|.nsf|.spc|.gym|.adx|.dsp|.adp|.ymf|.ast|.afc|.hps|.xsp|.xwav|.waa|.wvs|.wam|.gcm|.idsp|.mpdsp|.mss|.spt|.rsd|.mid|.kar|.sap|.cmc|.cmr|.dmc|.mpt|.mpd|.rmt|.tmc|.tm8|.tm2|.oga|.url|.pxml|.tta|.rss|.cm3|.cms|.dlt|.brstm|.wtv|.mka|.tak"
+    m_musicExtensions = ".nsv|.m4a|.flac|.aac|.strm|.pls|.rm|.rma|.mpa|.wav|.wma|.ogg|.mp3|.mp2|.m3u|.mod|.amf|.669|.dmf|.dsm|.far|.gdm|.imf|.it|.m15|.med|.okt|.s3m|.stm|.sfx|.ult|.uni|.xm|.sid|.ac3|.dts|.cue|.aif|.aiff|.wpl|.ape|.mac|.mpc|.mp+|.mpp|.shn|.zip|.rar|.wv|.nsf|.spc|.gym|.adx|.dsp|.adp|.ymf|.ast|.afc|.hps|.xsp|.xwav|.waa|.wvs|.wam|.gcm|.idsp|.mpdsp|.mss|.spt|.rsd|.mid|.kar|.sap|.cmc|.cmr|.dmc|.mpt|.mpd|.rmt|.tmc|.tm8|.tm2|.oga|.url|.pxml|.tta|.rss|.cm3|.cms|.dlt|.brstm|.wtv|.mka|.tak|.opus|.dff|.dsf"
     m_videoExtensions = ".m4v|.3g2|.3gp|.nsv|.tp|.ts|.ty|.strm|.pls|.rm|.rmvb|.m3u|.m3u8|.ifo|.mov|.qt|.divx|.xvid|.bivx|.vob|.nrg|.img|.iso|.pva|.wmv|.asf|.asx|.ogm|.m2v|.avi|.bin|.dat|.mpg|.mpeg|.mp4|.mkv|.avc|.vp3|.svq3|.nuv|.viv|.dv|.fli|.flv|.rar|.001|.wpl|.zip|.vdr|.dvr-ms|.xsp|.mts|.m2t|.m2ts|.evo|.ogv|.sdp|.avs|.rec|.url|.pxml|.vc1|.h264|.rcv|.rss|.mpls|.webm|.bdmv|.wtv"
     m_subtitlesExtensions = ".utf|.utf8|.utf-8|.sub|.srt|.smi|.rt|.txt|.ssa|.text|.ssa|.aqt|.jss|.ass|.idx|.ifo|.rar|.zip"
 
     # These features become available with the respective API version
-    self.JSON_VER_CAPABILITIES = {"setresume":    (6,  2, 0),
-                                  "texturedb":    (6,  9, 0),
-                                  "removeart":    (6,  9, 1),
-                                  "setseason":    (6, 10, 0),
-                                  "setmovieset":  (6, 12, 0),
-                                  "filternullval":(6, 13, 1),
-                                  "isodates":     (6, 13, 2),
-                                  "dpmsnotify":   (6, 16, 0)
+    self.JSON_VER_CAPABILITIES = {"setresume":        (6,  2, 0),
+                                  "texturedb":        (6,  9, 0),
+                                  "removeart":        (6,  9, 1),
+                                  "setseason":        (6, 10, 0),
+                                  "setmovieset":      (6, 12, 0),
+                                  "setsettings":      (6, 13, 0),
+                                  "filternullval":    (6, 13, 1),
+                                  "isodates":         (6, 13, 2),
+                                  "dpmsnotify":       (6, 16, 0),
+                                  "openplayercoredef":(6, 18, 3),
+                                  "libshowdialogs":   (6, 19, 0)
                                  }
 
     self.SetJSONVersion(0, 0, 0)
@@ -194,6 +197,7 @@ class MyConfiguration(object):
     self.XBMC_BASE = self.XBMC_BASE.replace("/", os.sep)
     self.TEXTUREDB = self.TEXTUREDB.replace("/", os.sep)
     self.THUMBNAILS = self.THUMBNAILS.replace("/", os.sep)
+    self.HAS_THUMBNAILS_FS = os.path.exists(self.getFilePath())
 
     self.XBMC_HOST = self.getValue(config, "xbmc.host", "localhost")
     self.WEB_PORT = self.getValue(config, "webserver.port", "8080")
@@ -376,20 +380,17 @@ class MyConfiguration(object):
 
     self.PURGE_MIN_LEN = int(self.getValue(config, "purge.minlen", "5"))
 
-    self.IMDB_FIELDS = "rating, votes"
-    temp = self.getValue(config, "imdb.fields", "")
-    if temp:
-      if temp.startswith("+"):
-        temp = temp[1:]
-        temp2 = self.IMDB_FIELDS
-        if temp2 != "": temp2 = "%s, " % temp2
-        temp = "%s%s " % (temp2, temp.strip())
-      self.IMDB_FIELDS = temp
+    self.IMDB_FIELDS = self.getExRepList(config, "imdb.fields", ["rating", "votes", "top250"], True)
+    self.IMDB_TIMEOUT = self.getValue(config, "imdb.timeout", 15.0, allowundefined=True)
+    if self.IMDB_TIMEOUT: self.IMDB_TIMEOUT = float(self.IMDB_TIMEOUT)
 
     self.BIN_TVSERVICE = self.getValue(config, "bin.tvservice", "/usr/bin/tvservice")
     self.BIN_VCGENCMD = self.getValue(config, "bin.vcgencmd", "/usr/bin/vcgencmd", allowundefined=True)
     self.BIN_CECCONTROL = self.getValue(config, "bin.ceccontrol", "")
-    self.FORCE_HOTPLUG = self.getBoolean(config, "hdmi.force.hotplug", "no")
+    self.HDMI_FORCE_HOTPLUG = self.getBoolean(config, "hdmi.force.hotplug", "no")
+    self.HDMI_IGNORE_SUSPEND = self.getBoolean(config, "hdmi.ignoresuspend", "no")
+    self.HDMI_IGNORE_DISABLE = self.getBoolean(config, "hdmi.ignoredisable", "no")
+    self.HDMI_IGNORE_PLAYER = self.getBoolean(config, "hdmi.ignoreplayer", "no")
 
     # Use a smaller cache on ARM systems, based on the assumption that ARM systems
     # will have less memory than other platforms
@@ -403,6 +404,9 @@ class MyConfiguration(object):
     self.SEARCH_ENCODE = self.getBoolean(config, "encode", "yes")
 
     self.POSTER_WIDTH = int(self.getValue(config, "posterwidth", "5"))
+
+    self.CLEAN_SHOW_DIALOGS = self.getBoolean(config, "clean.showdialogs", "no")
+    self.SCAN_SHOW_DIALOGS = self.getBoolean(config, "scan.showdialogs", "no")
 
   def SetJSONVersion(self, major, minor, patch):
     self.JSON_VER = (major, minor, patch)
@@ -429,6 +433,12 @@ class MyConfiguration(object):
 
     # https://github.com/xbmc/xbmc/pull/4766
     self.JSON_HAS_DPMS_NOTIFY = self.HasJSONCapability("dpmsnotify")
+
+    # https://github.com/xbmc/xbmc/pull/5324
+    self.JSON_HAS_LIB_SHOWDIALOGS_PARAM = self.HasJSONCapability("libshowdialogs")
+
+    # https://github.com/xbmc/xbmc/pull/5454
+    self.JSON_HAS_OPEN_PLAYERCORE_DEFAULT = self.HasJSONCapability("openplayercoredef")
 
   def HasJSONCapability(self, feature):
     if feature not in self.JSON_VER_CAPABILITIES:
@@ -483,7 +493,7 @@ class MyConfiguration(object):
           # If value being undefined is valid, return None for undefined values
           if not value and allowundefined: return None
         except ConfigParser.NoOptionError:
-          if default is None and not allowNone:
+          if default is None and not allowundefined:
             raise ConfigParser.NoOptionError(aKey, "%s (or global section)" % self.THIS_SECTION)
       else:
         if default is None and not allowNone:
@@ -505,6 +515,8 @@ class MyConfiguration(object):
       for item in [x.strip() for x in aStr.split(",") if x]:
         if item:
           newlist.append(item)
+    elif aStr is None and allowundefined:
+      return default
 
     return newlist
 
@@ -516,6 +528,26 @@ class MyConfiguration(object):
       if x not in newList:
         newList.append(x)
     return newList
+
+  # Return an extended or replacement list
+  def getExRepList(self, config, aKey, initialList=[], allowundefined=False):
+    if self.getValue(config, aKey, "", allowundefined=True) is None:
+      return []
+
+    aList = self.getSimpleList(config, aKey, "", allowundefined)
+    iList = initialList
+
+    if aList:
+      if len(aList) != 0 and aList[0][:1] == "+":
+        aList[0] = aList[0][1:]
+      else:
+        iList = []
+
+    for a in aList:
+      if a not in iList:
+        iList.append(a)
+
+    return iList
 
   def getPatternFromList(self, config, aKey, default="", allowundefined=False):
     aList = self.getValue(config, aKey, default, allowundefined)
@@ -631,11 +663,11 @@ class MyConfiguration(object):
     print("  thumbnails = %s " % self.THUMBNAILS)
     print("  xbmc.host = %s" % self.XBMC_HOST)
     print("  webserver.port = %s" % self.WEB_PORT)
-    print("  webserver.ctimeout = %s" % self.WEB_CONNECTTIMEOUT)
+    print("  webserver.ctimeout = %s" % self.NoneIsBlank(self.WEB_CONNECTTIMEOUT))
     print("  rpc.port = %s" % self.RPC_PORT)
     print("  rpc.ipversion = %s" % self.RPC_IPVERSION)
     print("  rpc.retry = %s" % self.RPC_RETRY)
-    print("  rpc.ctimeout = %s" % self.RPC_CONNECTTIMEOUT)
+    print("  rpc.ctimeout = %s" % self.NoneIsBlank(self.RPC_CONNECTTIMEOUT))
     print("  chunked = %s" % self.BooleanIsYesNo(self.CHUNKED))
     print("  modifieddate.mdy = %s" % self.BooleanIsYesNo(self.MDATE_MDY))
     print("  query.seasons = %s" % self.BooleanIsYesNo(self.QUERY_SEASONS))
@@ -701,14 +733,20 @@ class MyConfiguration(object):
     print("  subtitle.filetypes = %s" % self.NoneIsBlank(", ".join(self.SUBTITLE_FILETYPES_EX)))
     print("  watched.overwrite = %s" % self.BooleanIsYesNo(self.WATCHEDOVERWRITE))
     print("  network.mac = %s" % self.NoneIsBlank(self.MAC_ADDRESS))
-    print("  imdb.fields = %s" % self.NoneIsBlank(self.IMDB_FIELDS))
+    print("  imdb.fields = %s" % self.NoneIsBlank(", ".join(self.IMDB_FIELDS)))
+    print("  imdb.timeout = %s" % self.NoneIsBlank(self.IMDB_TIMEOUT))
     print("  bin.tvservice = %s" % self.NoneIsBlank(self.BIN_TVSERVICE))
     print("  bin.vcgencmd = %s" % self.NoneIsBlank(self.BIN_VCGENCMD))
     print("  bin.ceccontrol = %s" % self.NoneIsBlank(self.BIN_CECCONTROL))
-    print("  hdmi.force.hotplug = %s" % self.BooleanIsYesNo(self.FORCE_HOTPLUG))
+    print("  hdmi.force.hotplug = %s" % self.BooleanIsYesNo(self.HDMI_FORCE_HOTPLUG))
+    print("  hdmi.ignoresuspend = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_SUSPEND))
+    print("  hdmi.ignoredisable = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_DISABLE))
+    print("  hdmi.ignoreplayer = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_PLAYER))
     print("  dcache.size = %d" % self.DCACHE_SIZE)
     print("  dcache.agelimit = %d" % self.DCACHE_AGELIMIT)
     print("  posterwidth = %d" % self.POSTER_WIDTH)
+    print("  clean.showdialogs = %s" % self.BooleanIsYesNo(self.CLEAN_SHOW_DIALOGS))
+    print("  scan.showdialogs = %s" % self.BooleanIsYesNo(self.SCAN_SHOW_DIALOGS))
 
     print("")
     print("See http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6 for details of available audio/video fields.")
@@ -952,16 +990,22 @@ class MyImageLoader(threading.Thread):
 
     self.totals.stop()
 
-  def loadImage(self, item):
-    ATTEMPT = 1 if self.retry < 1 else self.retry
+  def geturl(self, item):
     PDRETRY = self.retry
-    PERFORM_DOWNLOAD = False
-
-    self.totals.start(item.mtype, item.itype)
 
     # Call Files.PrepareDownload. If failure, retry up to retry times, waiting a short
     # interval between each attempt.
     url = self.json.getDownloadURL(item.filename)
+    rowexists = True
+
+    # If no url, could be because thumbnail is missing but db row exists - if thumbnail
+    # no longer available, then delete the row and try again to obtain url
+    if url is None and not self.config.DOWNLOAD_PREDELETE and item.dbid != 0 and self.force:
+      if self.config.HAS_THUMBNAILS_FS and not os.path.exists(self.config.getFilePath(item.cachedurl)):
+        self.logger.log("Deleting row with missing image from cache - id [%d], cachedurl [%s] for filename [%s]"
+                      % (item.dbid, item.cachedurl, item.decoded_filename))
+        self.database.deleteItem(item.dbid, None)
+        rowexists = False
 
     while PDRETRY > 0 and not url:
       self.logger.log("Retrying getDownloadURL(), %d attempts remaining" % PDRETRY)
@@ -969,12 +1013,23 @@ class MyImageLoader(threading.Thread):
       PDRETRY -= 1
       url = self.json.getDownloadURL(item.filename)
 
+    return (url, rowexists)
+
+  def loadImage(self, item):
+    ATTEMPT = 1 if self.retry < 1 else self.retry
+    PERFORM_DOWNLOAD = False
+
+    self.totals.start(item.mtype, item.itype)
+
+    (url, rowexists) = self.geturl(item)
+
     if url:
       if not self.config.DOWNLOAD_PREDELETE:
         if item.dbid != 0 and self.force:
-          self.logger.log("Deleting old image from cache with id [%d], cachedurl [%s] for filename [%s]"
-                          % (item.dbid, item.cachedurl, item.decoded_filename))
-          self.database.deleteItem(item.dbid, item.cachedurl)
+          if rowexists:
+            self.logger.log("Deleting old image from cache with id [%d], cachedurl [%s] for filename [%s]"
+                            % (item.dbid, item.cachedurl, item.decoded_filename))
+            self.database.deleteItem(item.dbid, item.cachedurl)
           self.totals.bump("Deleted", item.itype)
           PERFORM_DOWNLOAD = True
       if self.config.DOWNLOAD_PAYLOAD or PERFORM_DOWNLOAD:
@@ -1023,6 +1078,7 @@ class MyHDMIManager(threading.Thread):
     self.config = config
     self.logger = logger
     self.cmdqueue = cmdqueue
+    self.ignoreplayer = self.config.HDMI_IGNORE_PLAYER
 
     self.bin_tvservice = config.BIN_TVSERVICE
     self.bin_vcgencmd = config.BIN_VCGENCMD if config.BIN_VCGENCMD and os.path.exists(config.BIN_VCGENCMD) else None
@@ -1045,6 +1101,7 @@ class MyHDMIManager(threading.Thread):
     self.logger.debug("Path to tvservice   : %s" % self.bin_tvservice)
     self.logger.debug("Path to vcgencmd    : %s" % self.bin_vcgencmd)
     self.logger.debug("Path to ceccontrol  : %s" % self.bin_ceccontrol)
+    self.logger.debug("Ignore Active Player: %s" % ("Yes" if self.ignoreplayer else "No"))
 
   def run(self):
     try:
@@ -1087,7 +1144,7 @@ class MyHDMIManager(threading.Thread):
           player_active = clientState["players.active"]
           library_active = (clientState["scanning.music"] or clientState["scanning.video"])
 
-          # If the Pi can suspend, don't schedule the EV_HDMI_OFF event or restart XBMC
+          # If the Pi can self-suspend, don't schedule the EV_HDMI_OFF event or restart XBMC
           # to re-init the HDMI. Instead, just log various events and call ceccontrol
           # whenever sleeping or waking.
           self.cansuspend = clientState["cansuspend"]
@@ -1152,12 +1209,12 @@ class MyHDMIManager(threading.Thread):
           self.logger.debug("Library scan has finished")
           library_active = False
 
-        elif method == "System.OnSleep":
+        elif method == "System.OnSleep" and self.cansuspend:
           self.logger.debug("Client is now suspended")
           # HDMI already disabled, but may need to process CEC functionality
           self.callCECControl("off")
 
-        elif method == "System.OnWake":
+        elif method == "System.OnWake" and self.cansuspend:
           self.logger.debug("Client has resumed")
           # HDMI already enabled, but may need to process CEC functionality
           self.callCECControl("on")
@@ -1181,7 +1238,7 @@ class MyHDMIManager(threading.Thread):
             self.EventStart(event, now)
             if event == self.EV_HDMI_OFF:
               self.logger.debug("HDMI power off in %d seconds unless cancelled" % int(self.EventInterval(event)))
-              if player_active or library_active:
+              if (player_active and not self.ignoreplayer) or library_active:
                 self.logger.debug("HDMI power-off will not occur until both player and library become inactive")
 
           # Process any expired events
@@ -1191,7 +1248,7 @@ class MyHDMIManager(threading.Thread):
               player_active = False
               self.EventStop(event)
             elif event == self.EV_HDMI_OFF:
-              if player_active or library_active:
+              if (player_active and not self.ignoreplayer) or library_active:
                 if not self.EventOverdue(event, now):
                   self.logger.debug("HDMI power-off timeout reached - waiting for player and/or library to become inactive")
               else:
@@ -1283,6 +1340,8 @@ class MyHDMIManager(threading.Thread):
     for s in REQUEST["params"]["properties"]:
       statuses[s] = values.get(s, False)
 
+    statuses["cansuspend"] = (statuses["cansuspend"] and not self.config.HDMI_IGNORE_SUSPEND)
+
     svalue = False
     if self.bin_vcgencmd:
       try:
@@ -1292,7 +1351,7 @@ class MyHDMIManager(threading.Thread):
           svalue = True
       except:
         pass
-    statuses["vcgencmd.display_power"] = svalue
+    statuses["vcgencmd.display_power"] = (svalue and not self.config.HDMI_IGNORE_DISABLE)
 
     return statuses
 
@@ -1313,7 +1372,7 @@ class MyHDMIManager(threading.Thread):
   # Typical values: 2 = HDMI off; 9 = HDMI on, TV off/standby; 10 (a) = HDMI+TV on
   #
   def getDisplayStatus(self):
-    if self.config.FORCE_HOTPLUG:
+    if self.config.HDMI_FORCE_HOTPLUG:
       self.logger.debug("No hotplug support - assuming display is powered on")
       return True
 
@@ -1532,7 +1591,7 @@ class MyDB(object):
         self.delRowByID(id)
         return
 
-    if not cachedURL and id > 0:
+    if cachedURL is not None and id > 0:
       row = self.getSingleRow("WHERE id = %d" % id)
       if row is None:
         self.logger.out("id %s is not valid\n" % (self.config.IDFORMAT % int(id)))
@@ -1542,7 +1601,7 @@ class MyDB(object):
     else:
       localFile = cachedURL
 
-    if localFile and os.path.exists(self.config.getFilePath(localFile)):
+    if localFile is not None and os.path.exists(self.config.getFilePath(localFile)):
       os.remove(self.config.getFilePath(localFile))
       self.logger.log("FILE DELETE: Removed cached thumbnail file %s for id %s" % (localFile, (self.config.IDFORMAT % id)))
     else:
@@ -1751,6 +1810,7 @@ class MyJSONComms(object):
     ENDOFDATA = True
     LASTIO = 0
     jdata = {}
+    cbjdata = None
 
     while True:
       if ENDOFDATA:
@@ -1848,6 +1908,8 @@ class MyJSONComms(object):
             # with an id is available.
             if callback:
               if self.handleResponse(id, jdata, callback): break
+              #Save this jdata as it's our original response
+              if cbjdata is None: cbjdata = jdata
             elif "id" in jdata:
               break
 
@@ -1876,6 +1938,7 @@ class MyJSONComms(object):
           self.logger.log("SOCKET IO TIMEOUT EXCEEDED")
           raise socket.error("Socket IO timeout exceeded")
 
+    if cbjdata is not None: jdata = cbjdata
     if checkResult and not "result" in jdata:
       self.logger.out("%s.ERROR: JSON response has no result!\n%s\n" % (id, jdata))
 
@@ -2067,11 +2130,18 @@ class MyJSONComms(object):
       self.logger.out("Rescanning library...", newLine=True, log=True)
       REQUEST = {"method": scanMethod}
 
+    if self.config.JSON_HAS_LIB_SHOWDIALOGS_PARAM:
+      REQUEST["params"] = {"showdialogs": self.config.SCAN_SHOW_DIALOGS}
+
     self.sendJSON(REQUEST, "libRescan", callback=self.jsonWaitForScanFinished, checkResult=False)
 
   def cleanLibrary(self, cleanMethod):
     self.logger.out("Cleaning library...", newLine=True, log=True)
     REQUEST = {"method": cleanMethod}
+
+    if self.config.JSON_HAS_LIB_SHOWDIALOGS_PARAM:
+      REQUEST["params"] = {"showdialogs": self.config.CLEAN_SHOW_DIALOGS}
+
     self.sendJSON(REQUEST, "libClean", callback=self.jsonWaitForCleanFinished, checkResult=False)
 
   def getDirectoryList(self, path, mediatype="files", properties=["file","lastmodified"], use_cache=True, timestamp=False):
@@ -2619,7 +2689,7 @@ class MyJSONComms(object):
 
     elif action == "imdb":
       self.addProperties(REQUEST, "imdbnumber")
-      self.addProperties(REQUEST, self.config.IMDB_FIELDS)
+      self.addProperties(REQUEST, ",".join(self.config.IMDB_FIELDS))
 
     elif action == "missing":
       for unwanted in ["artist", "art", "fanart", "thumbnail"]:
@@ -3519,19 +3589,74 @@ class MyUtility(object):
       return url.replace("%5c", "%2f")
 
   @staticmethod
-  def getIMDBInfo(imdbnumber, plotFull=False, plotOutline=False):
+  def Top250MovieList():
+    gLogger.progress("Retrieving Top250 movie rankings...")
+
+    try:
+      import xml.etree.ElementTree as ET
+
+      URL = "http://top250.info/charts"
+
+      gLogger.log("Top250: Retrieving Top250 Movies from: [%s]" % URL)
+      html = urllib2.urlopen(URL)
+      data = html.read()
+      html.close()
+
+      gLogger.log("Top250: Read %d bytes of data" % len(data))
+
+      tstamp = data.find("<title>")
+      if tstamp  != -1:
+        tstamp += 30
+        gLogger.log("Top250: Data last updated [%s]" % data[tstamp:tstamp+18])
+
+      # Find end of first table, as movie list is in the second table
+      spos = data.find("</table>")
+      epos = data[spos+8:].find("</table>") if spos != -1 else -1
+
+      if spos != -1 and epos != -1:
+        data = data[spos+8:spos+8+epos+8]
+        gLogger.log("Top250: Table data found, %d bytes" % len(data))
+
+        table = ET.fromstring(data)
+
+        RE_IMDB = re.compile("/movie/\?([0-9]*)")
+
+        movies = {}
+        for row in table:
+          if row.attrib["class"] == "row_header": continue
+          movie = {}
+          title = row[2][0][0].text
+          anchor = row[2][0].attrib["href"]
+          s = RE_IMDB.search(anchor)
+          if s:
+            movie["link"] = "tt%s" % s.group(1)
+            movie["title"] = title
+            movie["rank"] = len(movies)+1
+            movies[movie["link"]] = movie
+
+        gLogger.log("Top250: Loaded %d movies" % len(movies))
+        return movies
+      else:
+        gLogger.log("Top250: ERROR - didn't find movie data, skipping Top250 movies")
+        return None
+    except Exception as e:
+      gLogger.log("Top250: ERROR - failed to retrieve Top250 movie data: [%s]" % str(e))
+      return None
+
+  @staticmethod
+  def getIMDBInfo(imdbnumber, plotFull=False, plotOutline=False, qtimeout=15.0):
     try:
       base_url = "http://www.omdbapi.com"
 
       if plotOutline or not plotFull:
-        f = urllib2.urlopen("%s?i=%s&plot=short" % (base_url, imdbnumber))
+        f = urllib2.urlopen("%s?i=%s&plot=short" % (base_url, imdbnumber), timeout=qtimeout)
         data = json.loads(f.read().decode("utf-8"))
         outline = data.get("Plot", None)
       else:
         outline=None
 
       if plotFull:
-        f = urllib2.urlopen("%s?i=%s&plot=full" % (base_url, imdbnumber))
+        f = urllib2.urlopen("%s?i=%s&plot=full" % (base_url, imdbnumber), timeout=qtimeout)
         data = json.loads(f.read().decode("utf-8"))
 
       # Convert omdbapi.com fields to xbmc fields - mostly just a case
@@ -3567,11 +3692,12 @@ class MyUtility(object):
               newdata[newkey] = r
           else:
             newdata[newkey] = data[key]
-        except:
-          pass
+        except Exception as e:
+          gLogger.log("Exception during imdb processing: imdbnumber [%s], key [%s]. msg [%s]" % (imdbnumber, key, str(e)))
       return newdata
-    except urllib2.URLError:
-      return None
+    except (urllib2.URLError, socket.timeout) as e:
+      gLogger.log("Exception during imdb processing: imdbnumber [%s], timeout [%s], msg [%s]" % (imdbnumber, qtimeout, str(e)))
+      return {}
 
   @staticmethod
   def is_cache_item_stale(config, jcomms, mediaitem):
@@ -5099,10 +5225,19 @@ def duplicatesList(mediatype, jcomms, data):
 def updateIMDb(mediatype, jcomms, data):
   worklist = []
 
-  imdbfields = [f.strip() for f in gConfig.IMDB_FIELDS.split(",")]
+  imdbfields = gConfig.IMDB_FIELDS
 
   plotFull    = ("plot" in imdbfields)
   plotOutline = ("plotoutline" in imdbfields)
+  movies250   = None
+
+  if "top250" in imdbfields:
+    movies250 = MyUtility.Top250MovieList()
+    if movies250 is None:
+      gLogger.err("WARNING: Failed to obtain Top250 movies, check log for details", newLine=True)
+
+  #We don't need to query omdb if only updating top250
+  omdbquery = (imdbfields != [] and not (len(imdbfields) == 1 and "top250" in imdbfields))
 
   for item in data:
     title = item["title"]
@@ -5111,18 +5246,23 @@ def updateIMDb(mediatype, jcomms, data):
 
     gLogger.progress("Querying IMDb: %s..." % title)
 
-    newimdb = MyUtility.getIMDBInfo(imdbnumber, plotFull, plotOutline) if imdbnumber else None
+    if omdbquery:
+      newimdb = MyUtility.getIMDBInfo(imdbnumber, plotFull, plotOutline, qtimeout=gConfig.IMDB_TIMEOUT) if imdbnumber else None
+      if not newimdb or newimdb.get("response", "False") != "True":
+        gLogger.err("Could not obtain imdb details for [%s] (%s)" % (imdbnumber, title), newLine=True)
+        continue
+    else:
+      newimdb = {}
 
-    if not newimdb or newimdb.get("response", "False") != "True":
-      gLogger.err("Could not obtain imdb details for [%s] (%s)" % (imdbnumber, title), newLine=True)
-      continue
+    if movies250:
+      newimdb["top250"] = movies250.get(imdbnumber, {}).get("rank", 0) if imdbnumber is not None else 0
 
     # Truncate rating to 1 decimal place
     if "rating" in imdbfields:
       item["rating"] = float("%.1f" % item.get("rating", 0.0))
 
     # Sort genre lists for comparison purposes
-    if "genre" in imdbfields:
+    if "genre" in imdbfields and "genre" in newimdb:
       item["genre"] = sorted(item.get("genre", []))
       newimdb["genre"] = sorted(newimdb.get("genre", []))
 
@@ -5284,7 +5424,7 @@ def setDetails_worker(jcomms, mtype, libraryid, kvpairs, title, dryRun, itemnum,
         pairs[KEY] = []
         for item in pair:
           if item: pairs[KEY].append(getIntFloatStr(KEY, item) if typeconversion else item)
-      elif type(pair) is str and pair.startswith("[") and pair.endswith("]"):
+      elif (isinstance(pair, basestring)) and pair.startswith("[") and pair.endswith("]"):
         pairs[KEY] = []
         for item in [x.strip() for x in pair[1:-1].split(",")]:
           if item: pairs[KEY].append(getIntFloatStr(KEY, item) if typeconversion else item)
@@ -5312,10 +5452,10 @@ def setDetails_worker(jcomms, mtype, libraryid, kvpairs, title, dryRun, itemnum,
       i += 1
       if not field in R: R[field] = {}
       if i == fc:
-        if pairs[pair]:
-          R[field] = pairs[pair]
-        else:
+        if pairs[pair] is None or pairs[pair] == "":
           R[field] = None
+        else:
+          R[field] = pairs[pair]
       R = R[field]
 
   if dryRun:
@@ -5524,7 +5664,7 @@ def pruneCache(remove_nonlibrary_artwork=False):
     gLogger.out("", newLine=True)
 
   FSIZE = 0
-  GOTSIZE = os.path.exists(gConfig.getFilePath())
+  GOTSIZE = gConfig.HAS_THUMBNAILS_FS
   localfiles.sort(key=lambda row: row["url"])
 
   with database:
@@ -6471,6 +6611,83 @@ def ShowGUINotification(title, message, displaytime, image):
 
   MyJSONComms(gConfig, gLogger).sendJSON(REQUEST, "libNotification")
 
+def setSettingVariable(name, value):
+  REQUEST = {"method": "Settings.SetSettingValue", "params": {"setting":name, "value": value}}
+  MyJSONComms(gConfig, gLogger).sendJSON(REQUEST, "libSetSetting", checkResult=True)
+
+def getSettingVariable(name):
+  REQUEST = {"method": "Settings.GetSettingValue", "params": {"setting": name}}
+  data = MyJSONComms(gConfig, gLogger).sendJSON(REQUEST, "libGetSetting", checkResult=True)
+  return data["result"]["value"]
+
+def WriteSetting(name, rawvalue):
+  try:
+    value = eval(rawvalue)
+  except:
+    value = rawvalue
+  setSettingVariable(name, value)
+
+def ReadSetting(name):
+  try:
+    gLogger.out("%s: %s" % (name, getSettingVariable(name)), newLine=True)
+  except:
+    pass
+
+def ReadSettings(pattern=None):
+  REQUEST = {"method": "Settings.GetSettings", "params": {"level": "expert"}}
+  data = MyJSONComms(gConfig, gLogger).sendJSON(REQUEST, "libSettings", checkResult=True)
+  if pattern:
+    newdata = []
+    for item in data["result"]["settings"]:
+      if item["id"].find(pattern) != -1:
+        newdata.append(item)
+    gLogger.out(json.dumps(newdata, indent=2, ensure_ascii=True, sort_keys=True), newLine=True)
+  else:
+    gLogger.out(json.dumps(data["result"]["settings"], indent=2, ensure_ascii=True, sort_keys=True), newLine=True)
+
+def playerPlay(afile, playerid=None, withWait=False):
+  def _playlisten(id, method, params):
+    return True if method == "Player.OnStop" else False
+
+  REQUEST = {"method": "Player.Open", "params": {"item": {"file": afile}}}
+  if playerid is not None:
+    playercoreid = playerid
+    if playercoreid == "null":
+      playercoreid = None
+    elif playercoreid == "default":
+      if not gConfig.JSON_HAS_OPEN_PLAYERCORE_DEFAULT:
+        gLogger.err("WARNING: 'default' is not supported by current JSON API", newLine=True)
+        playercoreid = None
+    else:
+      try:
+        playercoreid = int(playerid)
+      except:
+        pass
+    REQUEST["params"]["options"] = {"playercoreid": playercoreid}
+  MyJSONComms(gConfig, gLogger).sendJSON(REQUEST, "libPlayer", checkResult=True, callback=_playlisten if withWait else None)
+
+def playerStop(playerid=None):
+  doplayeraction("Player.Stop", playerid)
+
+def playerPause(playerid=None):
+  doplayeraction("Player.PlayPause", playerid)
+
+def doplayeraction(action, playerid=None):
+  jcomms = MyJSONComms(gConfig, gLogger)
+
+  if playerid is None:
+    REQUEST = {"method": "Player.GetActivePlayers"}
+    data = jcomms.sendJSON(REQUEST, "libPlayers", checkResult=False)
+    players = data.get("result", [])
+    for player in players:
+      REQUEST = {"method": action, "params": {"playerid": player["playerid"]}}
+      jcomms.sendJSON(REQUEST, "libPlayer", checkResult=True)
+  else:
+    REQUEST = {"method": action, "params": {"playerid": playerid}}
+    jcomms.sendJSON(REQUEST, "libPlayer", checkResult=True)
+
+#---
+
 def pprint(msg):
   MAXWIDTH=0
 
@@ -6506,10 +6723,12 @@ def usage(EXIT_CODE):
           sources [media] | sources media [label] | directory path | rdirectory path | readfile infile [outfile ; -] | \
           notify title message [displaytime [image]] | \
           status [idleTime] | monitor | power <state> | exec [params] | execw [params] | wake | \
-          rbphdmi [seconds] | stats [class]* |\
-          input action* [parameter] | screenshot |\
+          rbphdmi [seconds] | stats [class]* | \
+          input action* [parameter] | screenshot | \
           volume [mute;unmute;#] | \
-          stress-test view-type numitems [pause] [repeat] [cooldown] |\
+          stress-test view-type numitems [pause] [repeat] [cooldown] | \
+          setsetting name value | getsetting name | getsettings [pattern] | debugon | debugoff | \
+          play item [playerid] | playw item [playerid] | stop [playerid] | pause [playerid] | \
           config | version | update | fupdate")
   print("")
   print("  s          Search url column for partial movie or tvshow title. Case-insensitive.")
@@ -6567,6 +6786,18 @@ def usage(EXIT_CODE):
   print("  volume     Set volume level 0-100, mute or unmute, or display current mute state and volume level")
   print(" stress-test Stress GUI by walking over library items. View type: thumbnail, horizontal, vertical. Default pause 0.25, repeat 1, cooldown (in seconds) 0.")
   print("  screenshot Take a screen grab of the current display")
+
+  print("  setsetting Set the value of the named setting, eg. 'setsetting locale.language English'")
+  print("  getsetting Get the current value of the named setting, eg. 'getsetting locale.language'")
+  print(" getsettings View details of all settings, or those where pattern is contained within id, eg. 'getsettings debug' to view details of all debug-related settings")
+  print("  debugon    Enable debugging")
+  print("  debugoff   Disable debugging")
+
+  print("  play       Play the specified item (on the specified player: null, default, #)")
+  print("  playw      Play the specified item (on the specified player: null, default, #), and wait until playback ends")
+  print("  stop       Stop playback of the specified player, or all currently active players")
+  print("  pause      Toggle pause/playback of the specified player, or all currently active players")
+
   print("")
   print("  config     Show current configuration")
   print("  version    Show current version and check for new version")
@@ -6632,6 +6863,8 @@ def checkConfig(option):
                 "status", "monitor", "power", "rbphdmi", "stats", "input", "screenshot", "stress-test",
                 "exec", "execw", "missing", "watched", "duplicates", "set", "testset",
                 "volume", "readfile", "notify",
+                "setsetting", "getsetting", "getsettings", "debugon", "debugoff",
+                "play", "playw", "stop", "pause",
                 "fixurls", "imdb"]
 
   # Database access (could be SQLite, could be JSON - needs to be determined later)
@@ -6784,10 +7017,7 @@ def checkConfig(option):
     gLogger.err(MSG)
     return False
 
-  if needFS1 or needFS2:
-    gotFS = os.path.exists(gConfig.getFilePath())
-
-  if (needFS1 or needFS2) and not gotFS:
+  if (needFS1 or needFS2) and not gConfig.HAS_THUMBNAILS_FS:
     MSG = "FATAL: The task you wish to perform requires read/write file\n" \
           "       access to the Thumbnails folder, which is inaccessible.\n\n" \
           "       Specify the location of this folder using the thumbnails property\n" \
@@ -6886,6 +7116,8 @@ def getLatestVersion(argv):
                    "vscan", "ascan", "vclean", "aclean",
                    "duplicates", "fixurls", "imdb", "stats",
                    "input", "screenshot", "volume", "readfile", "notify",
+                   "setsetting", "getsetting", "getsettings", "debugon", "debugoff",
+                   "play", "playw", "stop", "pause",
                    "version", "update", "fupdate", "config"]:
     USAGE  = argv[0]
 
@@ -7259,6 +7491,34 @@ def main(argv):
     _displaytime= int(argv[3]) if len(argv) >= 4 else None
     _image      = argv[4] if len(argv) >= 5 else None
     ShowGUINotification(_title, _message, _displaytime, _image)
+
+  elif argv[0] == "setsetting" and len(argv) == 3:
+    WriteSetting(argv[1], argv[2])
+
+  elif argv[0] == "getsetting" and len(argv) == 2:
+    ReadSetting(argv[1])
+
+  elif argv[0] == "getsettings" and len(argv) == 1:
+    ReadSettings()
+  elif argv[0] == "getsettings" and len(argv) == 2:
+    ReadSettings(argv[1])
+
+  elif argv[0] == "debugon" and len(argv) == 1:
+    setSettingVariable("debug.showloginfo", True)
+    setSettingVariable("debug.extralogging", True)
+
+  elif argv[0] == "debugoff" and len(argv) == 1:
+    setSettingVariable("debug.showloginfo", False)
+    setSettingVariable("debug.extralogging", False)
+
+  elif argv[0] == "play" and len(argv) in [2, 3]:
+    playerPlay(argv[1], argv[2] if len(argv) == 3 else None, False)
+  elif argv[0] == "playw" and len(argv) in [2, 3]:
+    playerPlay(argv[1], argv[2] if len(argv) == 3 else None, True)
+  elif argv[0] == "stop" and len(argv) in [1, 2]:
+    playerStop(int(argv[1]) if len(argv) == 2 else None)
+  elif argv[0] == "pause" and len(argv) in [1, 2]:
+    playerPause(int(argv[1]) if len(argv) == 2 else None)
 
   else:
     usage(1)
