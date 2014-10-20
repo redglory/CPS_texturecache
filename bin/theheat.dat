@@ -1,0 +1,14 @@
+[
+  {
+    "items": {
+      "art.banner": "nfs://192.168.1.77/movies/The.Heat.(2013)/The.Heat.2013.BR-Rip.avc1-banner.jpg", 
+      "art.discart": "nfs://192.168.1.77/movies/The.Heat.(2013)/The.Heat.2013.BR-Rip.avc1-disc.png", 
+      "art.clearart": "nfs://192.168.1.77/movies/The.Heat.(2013)/The.Heat.2013.BR-Rip.avc1-clearart.png", 
+      "art.clearlogo": "nfs://192.168.1.77/movies/The.Heat.(2013)/The.Heat.2013.BR-Rip.avc1-logo.png", 
+      "art.landscape": "nfs://192.168.1.77/movies/The.Heat.(2013)/The.Heat.2013.BR-Rip.avc1-landscape.jpg"
+    }, 
+    "libraryid": 1063, 
+    "type": "movie", 
+    "title": "The Heat"
+  }
+]
