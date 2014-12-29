@@ -50,6 +50,10 @@ class Texturecache(Plugin):
         self.config_path = os.path.join(self.conf('config_file'), 'texturecache.cfg')
         self.config_file = '@config=' + self.config_path
         log.debug("Configurations file: %s", self.config_path)
+        # Log file path
+        self.log_path = os.path.join(self.conf('log_file'), 'tc.log')
+        self.log_file = '@logfile=' + self.log_path
+        log.debug("Log file: %s", self.log_path)
         # Mklocal.py script path
         self.mklocal_path = os.path.join(self.conf('mklocal_path'), 'mklocal.py')
         log.debug("mklocal.py script path: %s", self.mklocal_path)
@@ -120,14 +124,14 @@ class Texturecache(Plugin):
         try:
             remote_moviepath = os.path.join(self.prefix_path, os.path.basename(os.path.normpath(group['destination_dir'])))
 
-            log.debug("Sending JSON VideoLibrary.Scan to scan remote movie path: %s", remote_moviepath)
+            log.debug("Sending JSON VideoLibrary.Scan to scan new movie: %s", remote_moviepath)
             command = []
-            command = ['python', self.texturecache_path, 'vscan', remote_moviepath, self.config_file]
+            command = ['python', self.texturecache_path, 'vscan', self.prefix_path, self.config_file, self.log_file]
             p = Popen(command, stdout=PIPE, stderr=STDOUT)
             response = p.communicate()[0]
             response = response[:-1] if response.endswith("\n") else response
             log.debug('update_xbmc response: %s', response)
-            if response.find('Rescanning directory:') != -1:
+            if response.find('Updating Library: New movieid') != -1:
                 log.info("Successfully updated XBMC library with movie: %s", self.movie_name)
                 # wait for XBMC to update database
                 time.sleep(20)
@@ -177,7 +181,7 @@ class Texturecache(Plugin):
         try:
             # get xbmc library movie json data
             command = []
-            command = ['python', self.texturecache_path, 'jd', 'movies', '@filter.operator=is', self.movie_name, self.config_file]
+            command = ['python', self.texturecache_path, 'jd', 'movies', '@filter.operator=is', self.movie_name, self.config_file, self.log_file]
             log.debug("Retrieving XBMC Media library json data for movie %s with command: %s", (self.movie_name, command))
 
             try:
@@ -261,7 +265,7 @@ class Texturecache(Plugin):
 
         try:
             command = []
-            command = ['python', self.texturecache_path, 'set', self.config_file]
+            command = ['python', self.texturecache_path, 'set', self.config_file, self.log_file]
             log.debug("Setting media library artwork with command: %s", command)
             myinput = codecs.open(self.movie_local, "rb", encoding="utf-8")
             log.debug(myinput)
@@ -290,7 +294,7 @@ class Texturecache(Plugin):
 
         try:
             command = []
-            command = ['python', self.texturecache_path, 'C', 'movies', self.movie_name, self.config_file]
+            command = ['python', self.texturecache_path, 'C', 'movies', self.movie_name, self.config_file, self.log_file]
             log.debug("Caching movie artwork with command: %s", command)
             response = check_output(command, stderr=STDOUT).decode("utf-8")
             response = response[:-1] if response.endswith("\n") else response

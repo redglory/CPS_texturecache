@@ -37,6 +37,13 @@ config = [{
                     'description': 'Choose TextureCache configuration file (texturecache.cfg) path',
                 },
                 {
+                    'name': 'log_file',
+                    'label': 'Log file',
+                    'type': 'directory',
+                    'default': 'logs/tc.log',
+                    'description': 'Choose Log file path',
+                },
+                {
                     'name': 'local_path',
                     'label': 'Path to local artwork',
                     'type': 'directory',
@@ -45,7 +52,7 @@ config = [{
                 {
                     'name': 'prefix_path',
                     'label': 'Path to prefix artwork',
-                    'default': 'nfs://192.168.1.77/Movies/',
+                    'default': 'nfs://192.168.1.77/movies/',
                     'description': 'Choose your prefix artwork path',
                 },
                 {

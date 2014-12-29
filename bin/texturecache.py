@@ -58,7 +58,7 @@ else:
 class MyConfiguration(object):
   def __init__(self, argv):
 
-    self.VERSION = "1.7.9"
+    self.VERSION = "1.8.6"
 
     self.GITHUB = "https://raw.github.com/MilhouseVH/texturecache.py/master"
     self.ANALYTICS_GOOD = "http://goo.gl/BjH6Lj"
@@ -74,11 +74,12 @@ class MyConfiguration(object):
     # https://github.com/xbmc/xbmc/blob/master/xbmc/settings/AdvancedSettings.cpp
     m_pictureExtensions = ".png|.jpg|.jpeg|.bmp|.gif|.ico|.tif|.tiff|.tga|.pcx|.cbz|.zip|.cbr|.rar|.dng|.nef|.cr2|.crw|.orf|.arw|.erf|.3fr|.dcr|.x3f|.mef|.raf|.mrw|.pef|.sr2|.rss"
     m_musicExtensions = ".nsv|.m4a|.flac|.aac|.strm|.pls|.rm|.rma|.mpa|.wav|.wma|.ogg|.mp3|.mp2|.m3u|.mod|.amf|.669|.dmf|.dsm|.far|.gdm|.imf|.it|.m15|.med|.okt|.s3m|.stm|.sfx|.ult|.uni|.xm|.sid|.ac3|.dts|.cue|.aif|.aiff|.wpl|.ape|.mac|.mpc|.mp+|.mpp|.shn|.zip|.rar|.wv|.nsf|.spc|.gym|.adx|.dsp|.adp|.ymf|.ast|.afc|.hps|.xsp|.xwav|.waa|.wvs|.wam|.gcm|.idsp|.mpdsp|.mss|.spt|.rsd|.mid|.kar|.sap|.cmc|.cmr|.dmc|.mpt|.mpd|.rmt|.tmc|.tm8|.tm2|.oga|.url|.pxml|.tta|.rss|.cm3|.cms|.dlt|.brstm|.wtv|.mka|.tak|.opus|.dff|.dsf"
-    m_videoExtensions = ".m4v|.3g2|.3gp|.nsv|.tp|.ts|.ty|.strm|.pls|.rm|.rmvb|.m3u|.m3u8|.ifo|.mov|.qt|.divx|.xvid|.bivx|.vob|.nrg|.img|.iso|.pva|.wmv|.asf|.asx|.ogm|.m2v|.avi|.bin|.dat|.mpg|.mpeg|.mp4|.mkv|.avc|.vp3|.svq3|.nuv|.viv|.dv|.fli|.flv|.rar|.001|.wpl|.zip|.vdr|.dvr-ms|.xsp|.mts|.m2t|.m2ts|.evo|.ogv|.sdp|.avs|.rec|.url|.pxml|.vc1|.h264|.rcv|.rss|.mpls|.webm|.bdmv|.wtv"
+    m_videoExtensions = ".m4v|.3g2|.3gp|.nsv|.tp|.ts|.ty|.strm|.pls|.rm|.rmvb|.m3u|.m3u8|.ifo|.mov|.qt|.divx|.xvid|.bivx|.vob|.nrg|.img|.iso|.pva|.wmv|.asf|.asx|.ogm|.m2v|.avi|.bin|.dat|.mpg|.mpeg|.mp4|.mkv|.mk3d|.avc|.vp3|.svq3|.nuv|.viv|.dv|.fli|.flv|.rar|.001|.wpl|.zip|.vdr|.dvr-ms|.xsp|.mts|.m2t|.m2ts|.evo|.ogv|.sdp|.avs|.rec|.url|.pxml|.vc1|.h264|.rcv|.rss|.mpls|.webm|.bdmv|.wtv"
     m_subtitlesExtensions = ".utf|.utf8|.utf-8|.sub|.srt|.smi|.rt|.txt|.ssa|.text|.ssa|.aqt|.jss|.ass|.idx|.ifo|.rar|.zip"
 
     # These features become available with the respective API version
     self.JSON_VER_CAPABILITIES = {"setresume":        (6,  2, 0),
+                                  "profilesupport":   (6,  6, 0),
                                   "texturedb":        (6,  9, 0),
                                   "removeart":        (6,  9, 1),
                                   "setseason":        (6, 10, 0),
@@ -86,9 +87,12 @@ class MyConfiguration(object):
                                   "setsettings":      (6, 13, 0),
                                   "filternullval":    (6, 13, 1),
                                   "isodates":         (6, 13, 2),
+                                  "debugextralog":    (6, 15, 3),
                                   "dpmsnotify":       (6, 16, 0),
                                   "openplayercoredef":(6, 18, 3),
-                                  "libshowdialogs":   (6, 19, 0)
+                                  "libshowdialogs":   (6, 19, 0),
+                                  "exitcode":         (6, 21, 0),
+                                  "profiledirectory": (999, 99, 9)
                                  }
 
     self.SetJSONVersion(0, 0, 0)
@@ -162,28 +166,27 @@ class MyConfiguration(object):
     self.IDFORMAT = self.getValue(config, "format", "%06d")
     self.FSEP = self.getValue(config, "sep", "|")
 
-    _atv2_path = "/User/Library/Preferences/XBMC/userdata"
-    _macosx_path = "~/Library/Application Support/XBMC/userdata"
-    _android1_path = "Android/data/org.xbmc.xbmc/files/.xbmc/userdata"
-    _android2_path = "/sdcard/%s" % _android1_path
-
-    UD_SYS_DEFAULT = "~/.xbmc/userdata"
-
-    if sys.platform == "win32":
-      UD_SYS_DEFAULT = "%s\\XBMC\\userdata" % os.environ["appdata"]
-    elif sys.platform == "darwin" and os.path.exists(_atv2_path):
-      UD_SYS_DEFAULT = _atv2_path
-    elif sys.platform == "darwin" and os.path.exists(os.path.expanduser(_macosx_path)):
-      UD_SYS_DEFAULT = _macosx_path
-    else:
-      if os.path.exists(_android2_path):
-        UD_SYS_DEFAULT = _android2_path
-      elif os.path.exists(_android1_path):
-        UD_SYS_DEFAULT = _android1_path
+    UD_SYS_DEFAULT = self.getdefaultuserdata("Kodi")
+    if UD_SYS_DEFAULT is None: UD_SYS_DEFAULT = self.getdefaultuserdata("XBMC")
+    if UD_SYS_DEFAULT is None: UD_SYS_DEFAULT = "~/userdata"
 
     self.XBMC_BASE = os.path.expanduser(self.getValue(config, "userdata", UD_SYS_DEFAULT))
     self.TEXTUREDB = self.getValue(config, "dbfile", "Database/Textures13.db")
     self.THUMBNAILS = self.getValue(config, "thumbnails", "Thumbnails")
+
+    self.CURRENT_PROFILE = {"name": "", "lockmode": 0, "thumbnail": ""} # Not yet known
+    self.PROFILE_ENABLED = self.getBoolean(config, "profile.enabled", "yes")
+    self.PROFILE_MASTER = self.getValue(config, "profile.master", "Master user")
+    self.PROFILE_AUTOLOAD = self.getBoolean(config, "profile.autoload", "yes")
+    self.PROFILE_RETRY = int(self.getValue(config, "profile.retry", "60"))
+    self.PROFILE_WAIT = int(self.getValue(config, "profile.wait", "0"))
+    self.PROFILE_NAME = self.getValue(config, "profile.name", self.PROFILE_MASTER)
+    self.PROFILE_PASSWORD = self.getValue(config, "profile.password", "")
+    self.PROFILE_ENCRYPTED = self.getBoolean(config, "profile.password.encrypted", "no")
+    self.PROFILE_DIRECTORY = self.getValue(config, "profile.directory", "")
+
+    if self.PROFILE_DIRECTORY == "" and self.PROFILE_NAME != self.PROFILE_MASTER:
+      self.PROFILE_DIRECTORY = self.PROFILE_NAME
 
     # Read library and textures data in chunks to minimise server/client memory usage
     self.CHUNKED = self.getBoolean(config, "chunked", "yes")
@@ -391,6 +394,7 @@ class MyConfiguration(object):
     self.HDMI_IGNORE_SUSPEND = self.getBoolean(config, "hdmi.ignoresuspend", "no")
     self.HDMI_IGNORE_DISABLE = self.getBoolean(config, "hdmi.ignoredisable", "no")
     self.HDMI_IGNORE_PLAYER = self.getBoolean(config, "hdmi.ignoreplayer", "no")
+    self.HDMI_IGNORE_LIBRARY = self.getBoolean(config, "hdmi.ignorelibrary", "no")
 
     # Use a smaller cache on ARM systems, based on the assumption that ARM systems
     # will have less memory than other platforms
@@ -407,6 +411,39 @@ class MyConfiguration(object):
 
     self.CLEAN_SHOW_DIALOGS = self.getBoolean(config, "clean.showdialogs", "no")
     self.SCAN_SHOW_DIALOGS = self.getBoolean(config, "scan.showdialogs", "no")
+
+  def getdefaultuserdata(self, appid):
+    atv2_path     = "/User/Library/Preferences/%s/userdata" % appid
+    macosx_path   = "~/Library/Application Support/%s/userdata" % appid
+
+    linux1_path    = "/var/lib/%s/.%s/userdata" % (appid.lower(), appid.lower())
+    linux2_path    = "~/.%s/userdata" % appid.lower()
+
+    android1_path = "Android/data/org.%s.%s/files/.%s/userdata" % (appid.lower(), appid.lower(), appid.lower())
+    android2_path = "/sdcard/%s" % android1_path
+    firetv_path = "/storage/emulated/0/%s" % android1_path
+
+    if sys.platform == "win32":
+      win32_path = "%s\\%s\\userdata" % (os.environ["appdata"], appid)
+      if os.path.exists(win32_path):
+        return win32_path
+    elif sys.platform == "darwin" and os.path.exists(atv2_path):
+      return atv2_path
+    elif sys.platform == "darwin" and os.path.exists(os.path.expanduser(macosx_path)):
+      return macosx_path
+    else: #Linux/Android
+      if os.path.exists(os.path.expanduser(linux1_path)):
+        return linux1_path
+      elif os.path.exists(os.path.expanduser(linux2_path)):
+        return linux2_path
+      elif os.path.exists(firetv_path):
+        return firetv_path
+      elif os.path.exists(android2_path):
+        return android2_path
+      elif os.path.exists(android1_path):
+        return android1_path
+
+    return None
 
   def SetJSONVersion(self, major, minor, patch):
     self.JSON_VER = (major, minor, patch)
@@ -434,11 +471,23 @@ class MyConfiguration(object):
     # https://github.com/xbmc/xbmc/pull/4766
     self.JSON_HAS_DPMS_NOTIFY = self.HasJSONCapability("dpmsnotify")
 
-    # https://github.com/xbmc/xbmc/pull/5324
-    self.JSON_HAS_LIB_SHOWDIALOGS_PARAM = self.HasJSONCapability("libshowdialogs")
+    # https://github.com/xbmc/xbmc/commit/77812fbc7e35aaea67e5df31a96a932f85595184
+    self.JSON_HAS_DEBUG_EXTRA_LOG = self.HasJSONCapability("debugextralog")
 
     # https://github.com/xbmc/xbmc/pull/5454
     self.JSON_HAS_OPEN_PLAYERCORE_DEFAULT = self.HasJSONCapability("openplayercoredef")
+
+    # https://github.com/xbmc/xbmc/pull/5324
+    self.JSON_HAS_LIB_SHOWDIALOGS_PARAM = self.HasJSONCapability("libshowdialogs")
+
+    #https://github.com/xbmc/xbmc/pull/5786
+    self.JSON_HAS_EXIT_CODE = self.HasJSONCapability("exitcode")
+
+    # Support profile switching?
+    self.JSON_HAS_PROFILE_SUPPORT = self.HasJSONCapability("profilesupport")
+
+    # https://github.com/xbmc/xbmc/pull/????
+    self.JSON_HAS_PROFILE_DIRECTORY = self.HasJSONCapability("profiledirectory")
 
   def HasJSONCapability(self, feature):
     if feature not in self.JSON_VER_CAPABILITIES:
@@ -613,12 +662,16 @@ class MyConfiguration(object):
   def getFilePath(self, filename=""):
     if os.path.isabs(self.THUMBNAILS):
       return os.path.join(self.THUMBNAILS, filename)
+    elif self.PROFILE_DIRECTORY != "":
+      return os.path.join(self.XBMC_BASE, "profiles", self.PROFILE_DIRECTORY, self.THUMBNAILS, filename)
     else:
       return os.path.join(self.XBMC_BASE, self.THUMBNAILS, filename)
 
   def getDBPath(self):
     if os.path.isabs(self.TEXTUREDB):
       return self.TEXTUREDB
+    elif self.PROFILE_DIRECTORY != "":
+      return os.path.join(self.XBMC_BASE, "profiles", self.PROFILE_DIRECTORY, self.TEXTUREDB)
     else:
       return os.path.join(self.XBMC_BASE, self.TEXTUREDB)
 
@@ -742,11 +795,22 @@ class MyConfiguration(object):
     print("  hdmi.ignoresuspend = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_SUSPEND))
     print("  hdmi.ignoredisable = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_DISABLE))
     print("  hdmi.ignoreplayer = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_PLAYER))
+    print("  hdmi.ignorelibrary = %s" % self.BooleanIsYesNo(self.HDMI_IGNORE_LIBRARY))
     print("  dcache.size = %d" % self.DCACHE_SIZE)
     print("  dcache.agelimit = %d" % self.DCACHE_AGELIMIT)
     print("  posterwidth = %d" % self.POSTER_WIDTH)
     print("  clean.showdialogs = %s" % self.BooleanIsYesNo(self.CLEAN_SHOW_DIALOGS))
     print("  scan.showdialogs = %s" % self.BooleanIsYesNo(self.SCAN_SHOW_DIALOGS))
+
+#    print("  profile.master = %s" % self.NoneIsBlank(self.PROFILE_MASTER))
+    print("  profile.enabled = %s" % self.BooleanIsYesNo(self.PROFILE_ENABLED))
+    print("  profile.autoload = %s" % self.BooleanIsYesNo(self.PROFILE_AUTOLOAD))
+    print("  profile.retry = %s" % self.PROFILE_RETRY)
+    print("  profile.wait = %s" % self.PROFILE_WAIT)
+    print("  profile.name = %s" % self.NoneIsBlank(self.PROFILE_NAME))
+    print("  profile.password = %s" % self.NoneIsBlank(self.PROFILE_PASSWORD))
+    print("  profile.password.encrypted = %s" % self.BooleanIsYesNo(self.PROFILE_ENCRYPTED))
+    print("  profile.directory = %s" % self.NoneIsBlank(self.PROFILE_DIRECTORY))
 
     print("")
     print("See http://wiki.xbmc.org/index.php?title=JSON-RPC_API/v6 for details of available audio/video fields.")
@@ -914,6 +978,7 @@ class MyLogger():
 
   def err(self, data, newLine=False, log=False):
     with threading.Lock():
+      self.progress("")
       udata = MyUtility.toUnicode(data)
       sys.stderr.write("%-s" % udata)
       if newLine:
@@ -1079,6 +1144,7 @@ class MyHDMIManager(threading.Thread):
     self.logger = logger
     self.cmdqueue = cmdqueue
     self.ignoreplayer = self.config.HDMI_IGNORE_PLAYER
+    self.ignorelibrary = self.config.HDMI_IGNORE_LIBRARY
 
     self.bin_tvservice = config.BIN_TVSERVICE
     self.bin_vcgencmd = config.BIN_VCGENCMD if config.BIN_VCGENCMD and os.path.exists(config.BIN_VCGENCMD) else None
@@ -1102,6 +1168,7 @@ class MyHDMIManager(threading.Thread):
     self.logger.debug("Path to vcgencmd    : %s" % self.bin_vcgencmd)
     self.logger.debug("Path to ceccontrol  : %s" % self.bin_ceccontrol)
     self.logger.debug("Ignore Active Player: %s" % ("Yes" if self.ignoreplayer else "No"))
+    self.logger.debug("Ignore Library Scan : %s" % ("Yes" if self.ignorelibrary else "No"))
 
   def run(self):
     try:
@@ -1238,7 +1305,7 @@ class MyHDMIManager(threading.Thread):
             self.EventStart(event, now)
             if event == self.EV_HDMI_OFF:
               self.logger.debug("HDMI power off in %d seconds unless cancelled" % int(self.EventInterval(event)))
-              if (player_active and not self.ignoreplayer) or library_active:
+              if (player_active and not self.ignoreplayer) or (library_active and not self.ignorelibrary):
                 self.logger.debug("HDMI power-off will not occur until both player and library become inactive")
 
           # Process any expired events
@@ -1248,7 +1315,7 @@ class MyHDMIManager(threading.Thread):
               player_active = False
               self.EventStop(event)
             elif event == self.EV_HDMI_OFF:
-              if (player_active and not self.ignoreplayer) or library_active:
+              if (player_active and not self.ignoreplayer) or (library_active and not self.ignorelibrary):
                 if not self.EventOverdue(event, now):
                   self.logger.debug("HDMI power-off timeout reached - waiting for player and/or library to become inactive")
               else:
@@ -1781,7 +1848,7 @@ class MyJSONComms(object):
         return self.sendWeb(request_type, url, request, headers, readAmount, timeout, rawData)
       raise
 
-  def sendJSON(self, request, id, callback=None, timeout=5.0, checkResult=True, useWebServer=False):
+  def sendJSON(self, request, id, callback=None, timeout=5.0, checkResult=True, useWebServer=False, ignoreSocketError=False):
     BUFFER_SIZE = 32768
 
     request["jsonrpc"] = "2.0"
@@ -1833,9 +1900,11 @@ class MyJSONComms(object):
           jdata = {"jsonrpc":"2.0","method":"System.OnQuit","params":{"data":-1,"sender":"xbmc"}}
           self.handleResponse(id, jdata, callback)
           return jdata
+        elif ignoreSocketError == False:
+            self.logger.err("ERROR: Socket closed prematurely - exiting", newLine=True, log=True)
+            sys.exit(2)
         else:
-          self.logger.err("ERROR: Socket closed prematurely - exiting", newLine=True, log=True)
-          sys.exit(2)
+          return {}
 
       except socket.error as e:
         READ_ERR = True
@@ -1966,8 +2035,11 @@ class MyJSONComms(object):
   # Process Notifications, optionally executing a callback function for
   # additional custom processing.
   def handleResponse(self, callingId, jdata, callback):
+    if "error" in jdata:
+      return True
+
     id = jdata["id"] if "id" in jdata else None
-    method = jdata["method"] if "method" in jdata else jdata["result"]
+    method = jdata["method"] if "method" in jdata else jdata.get("result", None)
     params = jdata["params"] if "params" in jdata else None
 
     if callback:
@@ -2131,7 +2203,8 @@ class MyJSONComms(object):
       REQUEST = {"method": scanMethod}
 
     if self.config.JSON_HAS_LIB_SHOWDIALOGS_PARAM:
-      REQUEST["params"] = {"showdialogs": self.config.SCAN_SHOW_DIALOGS}
+      if "params" not in REQUEST: REQUEST["params"] = {}
+      REQUEST["params"].update({"showdialogs": self.config.SCAN_SHOW_DIALOGS})
 
     self.sendJSON(REQUEST, "libRescan", callback=self.jsonWaitForScanFinished, checkResult=False)
 
@@ -3599,7 +3672,10 @@ class MyUtility(object):
 
       gLogger.log("Top250: Retrieving Top250 Movies from: [%s]" % URL)
       html = urllib2.urlopen(URL)
-      data = html.read()
+      if MyUtility.isPython3:
+        data = html.read().decode('utf-8')
+      else:
+        data = html.read()
       html.close()
 
       gLogger.log("Top250: Read %d bytes of data" % len(data))
@@ -3632,6 +3708,14 @@ class MyUtility(object):
             movie["link"] = "tt%s" % s.group(1)
             movie["title"] = title
             movie["rank"] = len(movies)+1
+            try:
+              movie["rating"] = float("%.1f" % float(row[3].text))
+            except:
+              pass
+            try:
+              movie["votes"] = u"%s" % format(int(row[4].text), ",d")
+            except:
+              pass
             movies[movie["link"]] = movie
 
         gLogger.log("Top250: Loaded %d movies" % len(movies))
@@ -3641,6 +3725,7 @@ class MyUtility(object):
         return None
     except Exception as e:
       gLogger.log("Top250: ERROR - failed to retrieve Top250 movie data: [%s]" % str(e))
+      raise
       return None
 
   @staticmethod
@@ -5236,26 +5321,43 @@ def updateIMDb(mediatype, jcomms, data):
     if movies250 is None:
       gLogger.err("WARNING: Failed to obtain Top250 movies, check log for details", newLine=True)
 
-  #We don't need to query omdb if only updating top250
-  omdbquery = (imdbfields != [] and not (len(imdbfields) == 1 and "top250" in imdbfields))
+  # We don't need to query omdb if only updating top250
+  omdbquery = (imdbfields != ["top250"])
+
+  # Avoid querying omdb if we're only updating fields available from Top250 movie list
+  onlyt250fields = (set(imdbfields).issubset(["top250", "rating", "votes"]))
 
   for item in data:
     title = item["title"]
     libid = item["movieid"]
     imdbnumber = item.get("imdbnumber", "")
 
+    if movies250 and imdbnumber is not None:
+      movie250 = movies250.get(imdbnumber, None)
+      # No need to query omdb if all Top250 fields are available and they're all we need
+      needomdb = not (movie250 and onlyt250fields and ("rank" in movie250 and "rating" in movie250 and "votes" in movie250))
+    else:
+      movie250 = None
+      needomdb = True
+
     gLogger.progress("Querying IMDb: %s..." % title)
 
-    if omdbquery:
+    if omdbquery and needomdb:
+      gLogger.log("Querying omdbapi.com: [%s] (%s)" % (imdbnumber, title))
       newimdb = MyUtility.getIMDBInfo(imdbnumber, plotFull, plotOutline, qtimeout=gConfig.IMDB_TIMEOUT) if imdbnumber else None
       if not newimdb or newimdb.get("response", "False") != "True":
         gLogger.err("Could not obtain imdb details for [%s] (%s)" % (imdbnumber, title), newLine=True)
         continue
     else:
+      gLogger.log("Avoided query of omdbapi.com: [%s] (%s)" % (imdbnumber, title))
       newimdb = {}
 
-    if movies250:
-      newimdb["top250"] = movies250.get(imdbnumber, {}).get("rank", 0) if imdbnumber is not None else 0
+    if movie250 is not None:
+      newimdb["top250"] = movie250.get("rank", 0)
+      newimdb["rating"] = movie250.get("rating", newimdb.get("rating",0.0))
+      newimdb["votes"] = movie250.get("votes", newimdb.get("votes",'0'))
+    else:
+      newimdb["top250"] = 0
 
     # Truncate rating to 1 decimal place
     if "rating" in imdbfields:
@@ -5521,6 +5623,8 @@ def sqlExtract(ACTION="NONE", search="", filter="", delete=False, silent=False):
         if ACTION == "EXISTS":
           if not os.path.exists(gConfig.getFilePath(row["cachedurl"])):
             ROWS.append(row)
+          elif os.path.getsize(gConfig.getFilePath(row["cachedurl"])) == 0:
+            ROWS.append(row)
         elif ACTION == "STATS":
           if os.path.exists(gConfig.getFilePath(row["cachedurl"])):
             FSIZE += os.path.getsize(gConfig.getFilePath(row["cachedurl"]))
@@ -5538,7 +5642,8 @@ def sqlExtract(ACTION="NONE", search="", filter="", delete=False, silent=False):
         database.deleteItem(row["textureid"], row["cachedurl"], warnmissing=False)
         gLogger.progress("")
     elif not silent:
-      for row in ROWS: database.dumpRow(row)
+      for row in ROWS:
+        database.dumpRow(row)
 
     if ACTION == "STATS":
       gLogger.out("\nFile Summary: %s files; Total size: %s KB\n\n" % (format(FCOUNT, ",d"), format(int(FSIZE/1024), ",d")))
@@ -6294,6 +6399,9 @@ def showStatus(idleTime=600):
 
   STATUS = []
 
+  if gConfig.JSON_HAS_PROFILE_SUPPORT:
+    STATUS.append("Current Profile: %s" % gConfig.CURRENT_PROFILE["name"])
+
   REQUEST = {"method": "XBMC.GetInfoBooleans",
              "params": {"booleans": ["System.ScreenSaverActive", "Library.IsScanningMusic", "Library.IsScanningVideo", "System.HasShutdown", "System.CanSuspend"]}}
   data = jcomms.sendJSON(REQUEST, "libSSaver")
@@ -6422,6 +6530,9 @@ def MediaLibraryStats(media_list):
 
   # Clean up
   lmedia_list = [m for m in lmedia_list if m not in ["audio", "video"]]
+
+  if gConfig.JSON_HAS_PROFILE_SUPPORT:
+    gLogger.out("%-11s: %s" % ("Profile", gConfig.CURRENT_PROFILE["name"]), newLine=True)
 
   for m in METHODS:
     media = re.search(".*Get(.*)", m).group(1)
@@ -6847,7 +6958,6 @@ def loadConfig(argv):
   gLogger.log("Current platform : %s" % sys.platform)
   gLogger.log("Python  version #: v%d.%d.%d.%d (%s)" % (sys.version_info[0], sys.version_info[1], \
                                                sys.version_info[2], sys.version_info[4], sys.version_info[3]))
-
 def checkConfig(option):
 
   jsonNeedVersion = 6
@@ -6890,6 +7000,9 @@ def checkConfig(option):
   needFS2    = (option in optFS2)
   needMAC    = (option in optMAC)
 
+  wcomms     = None
+  jcomms     = None
+
   # If we need to work out a value for USEJSONDB, we need to check JSON
   # to determine the current version of JSON API
   trySocket = False
@@ -6905,9 +7018,9 @@ def checkConfig(option):
 
   if needWeb:
     try:
-      jcomms = MyJSONComms(gConfig, gLogger, connecttimeout=gConfig.WEB_CONNECTTIMEOUT)
+      wcomms = MyJSONComms(gConfig, gLogger, connecttimeout=gConfig.WEB_CONNECTTIMEOUT)
       REQUEST = {"method": "JSONRPC.Ping"}
-      data = jcomms.sendJSON(REQUEST, "libPing", checkResult=False, useWebServer=True)
+      data = wcomms.sendJSON(REQUEST, "libPing", checkResult=False, useWebServer=True)
       gotWeb = ("result" in data and data["result"] == "pong")
     except socket.error:
       pass
@@ -6938,13 +7051,21 @@ def checkConfig(option):
                                  jsonGotVersion.get("patch",0))
           jsonGotVersion = jsonGotVersion["major"]
 
+      if gLogger.VERBOSE and gLogger.LOGGING:
+        gLogger.log("JSON CAPABILITIES: %s" % gConfig.dumpJSONCapabilities())
+
+      if gConfig.JSON_HAS_PROFILE_SUPPORT:
+        gConfig.CURRENT_PROFILE = getcurrentprofile(jcomms)
+        gLogger.log("CURRENT PROFILE: %s" % gConfig.CURRENT_PROFILE)
+        if gConfig.PROFILE_ENABLED and gConfig.CURRENT_PROFILE["name"] != gConfig.PROFILE_NAME:
+          if not switchprofile(jcomms): return False
+          jcomms = MyJSONComms(gConfig, gLogger)
+
       REQUEST = {"method": "XBMC.GetInfoBooleans",
                  "params": {"booleans": ["System.GetBool(pvrmanager.enabled)"]}}
       data = jcomms.sendJSON(REQUEST, "libPVR", checkResult=False)
       gConfig.HAS_PVR = ("result" in data and data["result"].get("System.GetBool(pvrmanager.enabled)", False))
 
-      if gLogger.VERBOSE and gLogger.LOGGING:
-        gLogger.log("JSON CAPABILITIES: %s" % gConfig.dumpJSONCapabilities())
     except socket.error:
       pass
 
@@ -7059,6 +7180,81 @@ def checkConfig(option):
 
   return True
 
+def loadprofile(jcomms):
+  REQUEST = {"method": "Profiles.LoadProfile", "params": {"profile": gConfig.PROFILE_NAME, "prompt": False}}
+  if gConfig.PROFILE_PASSWORD != "":
+    REQUEST["params"]["password"] = {"value": gConfig.PROFILE_PASSWORD}
+    REQUEST["params"]["password"]["encryption"] = "md5" if gConfig.PROFILE_ENCRYPTED else "none"
+
+  if jcomms is None: jcomms = MyJSONComms(gConfig, gLogger)
+
+  data = jcomms.sendJSON(REQUEST, "libProfile", checkResult=False, ignoreSocketError=True)
+  if "result" not in data:
+    return False
+  else:
+    return True
+
+def getcurrentprofile(jcomms):
+  REQUEST = {"method": "Profiles.GetCurrentProfile", "params": {"properties": ["thumbnail", "lockmode" ]}}
+  if gConfig.JSON_HAS_PROFILE_DIRECTORY:
+    REQUEST["params"]["properties"].extend(["directory"])
+
+  data = jcomms.sendJSON(REQUEST, "libProfile", ignoreSocketError=True)
+
+  if "result" in data:
+    profile = {}
+    profile["name"] = data["result"]["label"]
+    profile["lockmode"] = data["result"]["lockmode"]
+    profile["thumbnail"] = data["result"]["thumbnail"]
+    profile["directory"] = data["result"].get("directory", "")
+    return profile
+  else:
+    return gConfig.CURRENT_PROFILE
+
+def switchprofile(jcomms):
+  if gConfig.CURRENT_PROFILE["name"] == gConfig.PROFILE_NAME:
+    return True
+  elif gConfig.PROFILE_AUTOLOAD:
+    gLogger.log("SWITCHING PROFILE FROM \"%s\" to \"%s\"" % (gConfig.CURRENT_PROFILE["name"], gConfig.PROFILE_NAME))
+    gLogger.progress("Switching profile from \"%s\" to \"%s\"..." % (gConfig.CURRENT_PROFILE["name"], gConfig.PROFILE_NAME))
+
+    if jcomms is None: jcomms = MyJSONComms(gConfig, gLogger)
+
+    if not loadprofile(jcomms):
+      gLogger.err("ERROR: Profile \"%s\" is not valid!" % gConfig.PROFILE_NAME, newLine=True)
+      return False
+
+    i = 0
+    bounce = False
+    while i <= gConfig.PROFILE_RETRY:
+      try:
+        i += 1
+        time.sleep(1.0)
+        jcomms = MyJSONComms(gConfig, gLogger, connecttimeout=1.0)
+        gConfig.CURRENT_PROFILE = getcurrentprofile(jcomms)
+        if gConfig.CURRENT_PROFILE["name"] == gConfig.PROFILE_NAME:
+          gLogger.log("SWITCHED TO PROFILE: %s" % gConfig.CURRENT_PROFILE)
+          if gConfig.PROFILE_WAIT != 0:
+            gLogger.log("Waiting %d seconds for server to stabilise after loading profile..." % gConfig.PROFILE_WAIT)
+            time.sleep(gConfig.PROFILE_WAIT)
+          break
+        elif bounce:
+          loadprofile(jcomms)
+          bounce = False
+      except Exception as e:
+        bounce = True
+        jcomms = None
+        pass
+    else:
+      gLogger.err("Error: Failed to load profile %s" % gConfig.PROFILE_NAME, newLine=True)
+      return False
+    gLogger.progress("")
+  else:
+    gLogger.err("Error: Need to switch profiles from \"%s\" to \"%s\", but profile.autoload is not enabled" % (profile["name"], gConfig.PROFILE_NAME), newLine=True)
+    return False
+
+  return True
+
 def checkUpdate(argv, forcedCheck=False):
   (remoteVersion, remoteHash) = getLatestVersion(argv)
 
@@ -7110,6 +7306,8 @@ def getLatestVersion(argv):
     USAGE  = "qa"
   elif argv[0] == "stress-test":
     USAGE  = "stress"
+  elif argv[0] in ["play", "playw", "stop", "pause"]:
+    USAGE  = "transport"
   elif argv[0] in ["query", "missing", "watched",
                    "power", "wake", "status", "monitor", "rbphdmi",
                    "directory", "rdirectory", "sources", "remove",
@@ -7117,7 +7315,6 @@ def getLatestVersion(argv):
                    "duplicates", "fixurls", "imdb", "stats",
                    "input", "screenshot", "volume", "readfile", "notify",
                    "setsetting", "getsetting", "getsettings", "debugon", "debugoff",
-                   "play", "playw", "stop", "pause",
                    "version", "update", "fupdate", "config"]:
     USAGE  = argv[0]
 
@@ -7505,11 +7702,13 @@ def main(argv):
 
   elif argv[0] == "debugon" and len(argv) == 1:
     setSettingVariable("debug.showloginfo", True)
-    setSettingVariable("debug.extralogging", True)
+    if gConfig.JSON_HAS_DEBUG_EXTRA_LOG:
+      setSettingVariable("debug.extralogging", True)
 
   elif argv[0] == "debugoff" and len(argv) == 1:
     setSettingVariable("debug.showloginfo", False)
-    setSettingVariable("debug.extralogging", False)
+    if gConfig.JSON_HAS_DEBUG_EXTRA_LOG:
+      setSettingVariable("debug.extralogging", False)
 
   elif argv[0] == "play" and len(argv) in [2, 3]:
     playerPlay(argv[1], argv[2] if len(argv) == 3 else None, False)
