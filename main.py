@@ -100,8 +100,8 @@ class Texturecache(Plugin):
         log.debug("Renamed Movie Files: %s", group['renamed_files'])
 
         try:
-            log.info("Updating XBMC library with movie %s", self.movie_name)
-            if self.update_xbmc(group):
+            log.info("Updating Kodi library with movie %s", self.movie_name)
+            if self.update_kodi(group):
                 log.info("Setting and caching local artwork for movie %s", self.movie_name)
                 self.process()
         except:
@@ -117,9 +117,9 @@ class Texturecache(Plugin):
             log.error("There was a problem removing file: %s!", filepath)
             pass
 
-    def update_xbmc(self, group):
+    def update_kodi(self, group):
 
-        log.info("Sending JSON-RPC update command to XBMC")
+        log.info("Sending JSON-RPC update command to Kodi")
 
         try:
             remote_moviepath = os.path.join(self.prefix_path, os.path.basename(os.path.normpath(group['destination_dir'])))
@@ -130,24 +130,24 @@ class Texturecache(Plugin):
             p = Popen(command, stdout=PIPE, stderr=STDOUT)
             response = p.communicate()[0]
             response = response[:-1] if response.endswith("\n") else response
-            log.debug('update_xbmc response: %s', response)
+            log.debug('update_kodi response: %s', response)
             if response.find('Updating Library: New movieid') != -1:
-                log.info("Successfully updated XBMC library with movie: %s", self.movie_name)
-                # wait for XBMC to update database
+                log.info("Successfully updated Kodi library with movie: %s", self.movie_name)
+                # wait for Kodi to update database
                 time.sleep(20)
                 return True
             else:
-                log.info("No response from XBMC! Disconnected?")
+                log.info("No response from Kodi! Disconnected?")
                 return False
         except:
-            log.error("There was a problem updating XBMC library with movie %s: %s", (self.movie_name, (traceback.format_exc())))
+            log.error("There was a problem updating Kodi library with movie %s: %s", (self.movie_name, (traceback.format_exc())))
             return False
 
     def process(self):
 
         # starting texturecache steps:
-        log.debug("First step: Query XBMC library")
-        # Query XBMC library
+        log.debug("First step: Query Kodi library")
+        # Query Kodi library
         if self.get_json():
             log.debug("Second step: Local artwork references")
             # Local artwork references
@@ -179,10 +179,10 @@ class Texturecache(Plugin):
     def get_json(self):
 
         try:
-            # get xbmc library movie json data
+            # get Kodi library movie json data
             command = []
             command = ['python', self.texturecache_path, 'jd', 'movies', '@filter.operator=is', self.movie_name, self.config_file, self.log_file]
-            log.debug("Retrieving XBMC Media library json data for movie %s with command: %s", (self.movie_name, command))
+            log.debug("Retrieving Kodi Media library json data for movie %s with command: %s", (self.movie_name, command))
 
             try:
                 response = check_output(command, stderr=PIPE).decode("utf-8")
@@ -193,7 +193,7 @@ class Texturecache(Plugin):
                     f.write(response)
                     f.close()
             except:
-                log.debug("There was a problem creating file with XBMC json data for movie %s: %s", (self.movie_name, (traceback.format_exc())))
+                log.debug("There was a problem creating file with Kodi json data for movie %s: %s", (self.movie_name, (traceback.format_exc())))
                 return False
 
             # test file and proceed only if not empty!
@@ -205,7 +205,7 @@ class Texturecache(Plugin):
                     time.sleep(60)
                     self.get_json()
                 else:
-                    log.info("There was a problem creating file with XBMC json data for movie %s! Reached maximum number of retries!", self.movie_name)
+                    log.info("There was a problem creating file with Kodi json data for movie %s! Reached maximum number of retries!", self.movie_name)
                     return False
             else:
                 log.info("Successfully generated json data for movie %s", self.movie_name)
@@ -273,7 +273,7 @@ class Texturecache(Plugin):
             myinput.close()
             log.debug('set_artwork() return code: %s', ret)
             if ret == 0:
-                log.info("Successfully set %s local artwork to XBMC Media library!: ", self.movie_name)
+                log.info("Successfully set %s local artwork to Kodi Media library!: ", self.movie_name)
                 self.RETRIES = 0
                 return True
             else:
@@ -287,7 +287,7 @@ class Texturecache(Plugin):
                     log.info("There was a problem setting artwork for movie %s! Reached maximum number of retries!", self.movie_name)
                     return False
         except:
-            log.error("There was a problem updating %s local artwork on XBMC Media library: %s", (self.movie_name, (traceback.format_exc())))
+            log.error("There was a problem updating %s local artwork on Kodi Media library: %s", (self.movie_name, (traceback.format_exc())))
             return False
 
     def cache_artwork(self):
