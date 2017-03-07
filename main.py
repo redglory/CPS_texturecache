@@ -103,10 +103,33 @@ class Texturecache(Plugin):
             # Ember Media Manager already updates kodi library while scraping!
             #log.info("Updating Kodi library with movie %s", self.movie_name)
             #if self.update_kodi(group):
-            log.info("Setting and caching local artwork for movie %s", self.movie_name)
-            self.process()
+
+            # Let's make sure we have texturecache.py script downloaded and path is correct
+            if self.verify_tc_script():
+                log.info("Setting and caching local artwork for movie %s", self.movie_name)
+                self.process()
         except:
             log.error("There was a problem setting and/or caching local artwork for movie %s: %s", (self.movie_name, (traceback.format_exc())))
+            return False
+
+    def verify_tc_script(self):
+
+        log.info('Verifying texturecache.py script')
+        try:
+            command = []
+            command = ['python', self.texturecache_path, 'version']
+            p = Popen(command, stdout=PIPE, stderr=STDOUT)
+            response = p.communicate()[0]
+            response = response[:-1] if response.endswith("\n") else response
+            log.debug('verify_tc_script response: %s', response)
+            if response.find('Current Version:') != -1:
+                log.debug('Found texturecache script. Proceeding...')
+                return True
+            else:
+                log.error('texturecache.py path is invalid! Please make sure path is correct or install script from https://github.com/MilhouseVH/texturecache.py')
+                return False
+        except:
+            log.error("There was a problem verifying texturecache.py script: %s" % traceback.format_exc())
             return False
 
     def remove_file(self, filepath):
