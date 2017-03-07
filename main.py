@@ -100,10 +100,11 @@ class Texturecache(Plugin):
         log.debug("Renamed Movie Files: %s", group['renamed_files'])
 
         try:
-            log.info("Updating Kodi library with movie %s", self.movie_name)
-            if self.update_kodi(group):
-                log.info("Setting and caching local artwork for movie %s", self.movie_name)
-                self.process()
+            # Ember Media Manager already updates kodi library while scraping!
+            #log.info("Updating Kodi library with movie %s", self.movie_name)
+            #if self.update_kodi(group):
+            log.info("Setting and caching local artwork for movie %s", self.movie_name)
+            self.process()
         except:
             log.error("There was a problem setting and/or caching local artwork for movie %s: %s", (self.movie_name, (traceback.format_exc())))
             return False
