@@ -117,7 +117,7 @@ class Texturecache(Plugin):
         log.info('Verifying texturecache.py script')
         try:
             command = []
-            command = ['python', self.texturecache_path, 'version']
+            command = ['python', self.texturecache_path, 'version', self.config_file, self.log_file]
             p = Popen(command, stdout=PIPE, stderr=STDOUT)
             response = p.communicate()[0]
             response = response[:-1] if response.endswith("\n") else response
